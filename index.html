@@ -18,7 +18,7 @@
 <script>
 
 // set the dimensions and margins of the graph
-var margin = {top: 20, right: 20, bottom: 70, left: 50},
+var margin = {top: 20, right: 20, bottom: 100, left: 50},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -68,7 +68,7 @@ d3.csv("data.csv", function(error, data) {
   svg.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x).ticks(10))
+      .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")))
       .selectAll("text")
         .style("text-anchor", "end")
         .attr("dx", "-.8em")
