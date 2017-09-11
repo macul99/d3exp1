@@ -63,6 +63,7 @@ d3.csv("data.csv", function(error, data) {
   svg.append("path")
       .data([data])
       .attr("class", "line")
+      .style("stroke-dasharray", ("3, 3"))
       .attr("d", valueline);
 
   svg.selectAll("dot")
