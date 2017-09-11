@@ -10,6 +10,7 @@
 
 .axis { font: 14px sans-serif; }
 
+.area { fill: lightsteelblue; }
 </style>
 <body>
 
@@ -28,6 +29,12 @@ var parseTime = d3.timeParse("%d-%b-%y");
 // set the ranges
 var x = d3.scaleTime().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
+
+// define the area
+var area = d3.area()
+    .x(function(d) { return x(d.date);})
+    .y0(height)
+    .y1(function(d) { return y(d.close);})
 
 // define the line
 var valueline = d3.line()
@@ -58,6 +65,12 @@ d3.csv("data.csv", function(error, data) {
   // Scale the range of the data
   x.domain(d3.extent(data, function(d) { return d.date; }));
   y.domain([0, d3.max(data, function(d) { return d.close; })]);
+
+  // Add the area
+  svg.append("path")
+      .data([data])
+      .attr("class", "area")
+      .attr("d", area)
 
   // Add the valueline path.
   svg.append("path")
