@@ -18,7 +18,7 @@
 <script>
 
 // set the dimensions and margins of the graph
-var margin = {top: 20, right: 20, bottom: 50, left: 70},
+var margin = {top: 40, right: 20, bottom: 70, left: 70},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -73,7 +73,7 @@ d3.csv("data.csv", function(error, data) {
   // text label for the x axis
   svg.append("text")             
       .attr("x", width/2)
-      .attr("y", height + margin.top + 20) // this line and the one above can be replaced by: .attr("transform", "translate("+(width/2) + "," + (height +margin.top +20) + ")")
+      .attr("y", height + margin.top + 10) // this line and the one above can be replaced by: .attr("transform", "translate("+(width/2) + "," + (height +margin.top +20) + ")")
       .style("text-anchor", "middle")
       .text("Date");
 
@@ -90,6 +90,15 @@ d3.csv("data.csv", function(error, data) {
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .text("Value");
+
+  // add a title
+  svg.append("text")
+      .attr("x", (width / 2))       
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")  
+      .style("font-size", "20px") 
+      .style("text-decoration", "underline")  
+      .text("Value vs Date Graph");
 });
 
 </script>
