@@ -10,6 +10,10 @@
 
 .axis { font: 14px sans-serif; }
 
+.axisSteelBlue text { fill: steelblue; }
+
+.axisRed text { fill: red; }
+
 .area { fill: lightsteelblue; }
 
 text.shadow {
@@ -46,6 +50,7 @@ var parseTime = d3.timeParse("%d-%b-%y");
 // set the ranges
 var x = d3.scaleTime().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
+var y1 = d3.scaleLinear().range([height, 0]);
 
 // define the area
 var area = d3.area()
@@ -63,7 +68,7 @@ var valueline = d3.line()
 var valueline2 = d3.line()
     .curve(d3.curveBasis)
     .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.open); });
+    .y(function(d) { return y1(d.open); });
 
 // append the svg obgect to the body of the page
 // appends a 'group' element to 'svg'
@@ -100,7 +105,8 @@ d3.csv("data2.csv", function(error, data) {
 
   // Scale the range of the data
   x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return Math.max(d.close, d.open); })]);
+  y.domain([0, d3.max(data, function(d) { return d.close; })]);
+  y1.domain([0, d3.max(data, function(d) { return d.open; })]);
 
   // Add the area
   svg.append("path")
@@ -145,7 +151,7 @@ d3.csv("data2.csv", function(error, data) {
 
   // Add the Y Axis
   svg.append("g")
-      .attr("class", "axis")
+      .attr("class", "axisSteelBlue")
       .call(d3.axisLeft(y));
 
   // text label for the y axis
@@ -156,6 +162,12 @@ d3.csv("data2.csv", function(error, data) {
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .text("Value");
+
+  // Add the Y1 Axis
+  svg.append("g")
+      .attr("class", "axisRed")
+      .attr("transform", "translate( " + width + ", 0)")
+      .call(d3.axisLeft(y1));
 
   // add shadow to title
   svg.append("text")
@@ -203,7 +215,7 @@ d3.csv("data2.csv", function(error, data) {
 
   // add the lable for second line
   svg.append("text")
-      .attr("transform", "translate("+(width+3)+","+y(data[0].open)+")")
+      .attr("transform", "translate("+(width+3)+","+y1(data[0].open)+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "red")
