@@ -17,6 +17,17 @@ text.shadow {
   stroke-width: 4px;
   opacity: 0.8;
 }
+
+.grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
 </style>
 <body>
 
@@ -57,6 +68,18 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
+
+// gridlines in x axis function
+function make_x_gridlines() {
+    return d3.axisBottom(x)
+        .ticks(5)
+}
+
+// gridlines in y axis function
+function make_y_gridlines() {
+    return d3.axisLeft(y)
+        .ticks(5)
+}
 
 // Get the data
 d3.csv("data.csv", function(error, data) {
@@ -138,6 +161,23 @@ d3.csv("data.csv", function(error, data) {
       .style("font-size", "20px")
       .style("text-decoration", "underline")
       .text("Value vs Date Graph");
+
+  // add the X gridlines
+  svg.append("g")
+      .attr("class", "grid")
+      .attr("transform", "translate(0," + height + ")")
+      .call(make_x_gridlines()
+          .tickSize(-height)
+          .tickFormat("")
+      )
+
+  // add the Y gridlines
+  svg.append("g")
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+          .tickSize(-width)
+          .tickFormat("")
+      )
 });
 
 </script>
