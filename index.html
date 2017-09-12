@@ -59,6 +59,12 @@ var valueline = d3.line()
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.close); });
 
+// define the line2
+var valueline2 = d3.line()
+    .curve(d3.curveBasis)
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.open); });
+
 // append the svg obgect to the body of the page
 // appends a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
@@ -82,18 +88,19 @@ function make_y_gridlines() {
 }
 
 // Get the data
-d3.csv("data.csv", function(error, data) {
+d3.csv("data2.csv", function(error, data) {
   if (error) throw error;
 
   // format the data
   data.forEach(function(d) {
       d.date = parseTime(d.date);
       d.close = +d.close;
+      d.open = +d.open/10;
   });
 
   // Scale the range of the data
   x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.close; })]);
+  y.domain([0, d3.max(data, function(d) { return Math.max(d.close, d.open); })]);
 
   // Add the area
   svg.append("path")
@@ -107,6 +114,13 @@ d3.csv("data.csv", function(error, data) {
       .attr("class", "line")
       .style("stroke-dasharray", ("3, 3"))
       .attr("d", valueline);
+
+  // Add the valueline2 path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", "red")
+      .attr("d", valueline2);
 
   // Draw scatter plot
   svg.selectAll("dot")
