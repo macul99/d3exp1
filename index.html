@@ -36,7 +36,7 @@ text.shadow {
 <script>
 
 // set the dimensions and margins of the graph
-var margin = {top: 40, right: 20, bottom: 70, left: 70},
+var margin = {top: 40, right: 50, bottom: 70, left: 70},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -192,6 +192,22 @@ d3.csv("data2.csv", function(error, data) {
           .tickSize(-width)
           .tickFormat("")
       )
+
+  // add the lable for first line
+  svg.append("text")
+      .attr("transform", "translate("+(width+3)+","+y(data[0].close)+")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "steelblue")
+      .text("Close");
+
+  // add the lable for second line
+  svg.append("text")
+      .attr("transform", "translate("+(width+3)+","+y(data[0].open)+")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "red")
+      .text("Open");
 });
 
 </script>
